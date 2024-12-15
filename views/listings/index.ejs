@@ -1,0 +1,184 @@
+<% layout("/layouts/boilerplate") %>
+
+    <style>
+        /* Default styles */
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            font-weight: 100;
+            font-size: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            margin-left: auto;
+            margin-bottom: 1rem;
+            padding: auto;
+        }
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            width: 100px;
+            opacity: 0.7;
+            /* Default width */
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+            font-weight: 400;
+            font-size: 1.3rem;
+        }
+
+        .tax-toggle {
+            border: 1px, solid black;
+            border-radius: 1rem;
+            padding: 1rem;
+
+
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            #filters {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tax-toggle {
+                margin-top: 2rem;
+                width: 80%;
+            }
+
+            /* Hide all filters except the dropdown on small screens */
+            .filter {
+                display: none;
+            }
+
+            /* Show dropdown only */
+            .filter-dropdown {
+                display: block !important;
+                width: 100%;
+                text-align: center;
+                background: #f8f8f8;
+                padding: 0.5rem;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+        }
+
+        .tax-info {
+            display: none;
+        }
+    </style>
+
+
+    <div id="filters">
+        <!-- Individual filter icons -->
+        <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>Iconic Cities</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-mountain-sun"></i></div>
+            <p>Mountain</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-brands fa-fort-awesome-alt"></i></div>
+            <p>Castles</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Pools</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-tent-arrow-down-to-line"></i></div>
+            <p>Camping</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-solid fa-tractor"></i></div>
+            <p>Farms</p>
+        </div>
+        <div class="filter">
+            <div><i class="fa-regular fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </div>
+
+        <!-- Dropdown for smaller screens -->
+        <div class="filter-dropdown" style="display: none;">
+            <select>
+                <option value="trending">Trending</option>
+                <option value="rooms">Rooms</option>
+                <option value="iconic-cities">Iconic Cities</option>
+                <option value="mountain">Mountain</option>
+                <option value="castles">Castles</option>
+                <option value="amazing-pools">Amazing Pools</option>
+                <option value="camping">Camping</option>
+                <option value="farms">Farms</option>
+                <option value="arctic">Arctic</option>
+            </select>
+        </div>
+        <div class="tax-toggle">
+            <div class="form-check-reverse form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+            </div>
+
+        </div>
+    </div>
+
+    <body>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+            <% for( let listing of allListing) { %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+
+                    <div class="card col listing-card">
+                        <img src="<%=listing.image.url %>" class="card-img-top " alt="listing_image"
+                            style="height:20rem;">
+
+                        <div class="card-img-overlay"></div>
+                        <div class="card-body">
+
+                            <p class="card-text">
+
+                                <b>
+                                    <%=listing.title %>
+                                </b>
+                                <br>
+                                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                                    <i class="tax-info"> &nbsp; +18% Gst</i>
+                            </p>
+                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                        </div>
+
+                    </div>
+
+                    <% } %>
+        </div>
+
+    </body>
+    <script>
+        let taxSwitch = document.getElementById("flexSwitchCheckDefault");
+        taxSwitch.addEventListener('click', () => {
+            let taxInfo = document.getElementsByClassName("tax-info");
+            for (info of taxInfo) {
+                if (info.style.display != "inline") {
+                    info.style.display = "inline";
+                }
+                else {
+                    info.style.display = "none";
+                }
+            }
+        });
+    </script>
